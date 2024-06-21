@@ -4,12 +4,7 @@ pipeline {
         AWS_ACCESS_KEY_ID = 'AKIA6ODUZQ3Y7FT2ANU7'
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
    }
-    stages {
-    stage('Checkout') {
-      steps {
-        git 'https://github.com/your-username/my-web-app-frontend.git'
-      }
-    }
+   
     stages {
         stage('Build') {
             steps {
