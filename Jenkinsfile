@@ -31,7 +31,7 @@ pipeline {
             echo 'Deployment to S3 successful!'
         }
         failure {
-            echo 'Deployment to S3 failed!'
+            echo 'Deployment to S3 failed'
         }
     }
 }
