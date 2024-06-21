@@ -8,7 +8,6 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                // Your build steps here
                 sh 'npm install'
                 sh 'npm run build'
             }
@@ -20,7 +19,10 @@ pipeline {
                     string(credentialsId: 'your-aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
                     string(credentialsId: 'your-aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
-                    s3Upload(bucket: 'my-web1-app-bucket', includePathPattern: '**/*', workingDir: 'dist/')
+                    // Use the 'aws s3 cp' command to upload the files
+                    sh '''
+                    aws s3 cp dist/ s3://my-web1-app-bucket/ --recursive
+                    '''
                 }
             }
         }
