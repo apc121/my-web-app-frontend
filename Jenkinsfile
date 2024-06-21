@@ -1,40 +1,34 @@
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    NODE_HOME = tool name: 'nodejs'
-    PATH = "${env.NODE_HOME}/bin:${env.PATH}"
-  }
-
-  stages {
-    stage('Checkout') {
-      steps {
-        git 'https://github.com/apc121/my-web-app-frontend.git'
-      }
-    }
-
-    stage('Build') {
-      steps {
-        sh 'npm install'
-        sh 'npm run build'
-      }
-    }
-
-    stage('Deploy') {
-      steps {
-        withAWS(credentials: 'aws-id', region:'ap-south-1') {
-          s3Upload(bucket:'my-web1-app-bucket', workingDir: 'dist/', includePathPattern: '**/*')
+    stages {
+        stage('Build') {
+            steps {
+                // Your build steps here
+                sh 'npm install'
+                sh 'npm run build'
+            }
         }
-      }
-    }
-  }
 
-  post {
-    success {
-      echo 'Frontend deployment successful!'
+        stage('Deploy to S3') {
+            steps {
+                script {
+                    // Define your AWS credentials and region
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws-id', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                        // Use the s3Upload step to upload files to S3 bucket
+                        s3Upload(bucket: 'my-web1-app-bucket', includePathPattern: '**/*', workingDir: 'dist/')
+                    }
+                }
+            }
+        }
     }
-    failure {
-      echo 'Frontend deployment failed!'
+
+    post {
+        success {
+            echo 'Deployment to S3 successful!'
+        }
+        failure {
+            echo 'Deployment to S3 failed!'
+        }
     }
-  }
 }
