@@ -22,7 +22,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        withAWS(region:'ap-south-1') {
+        withAWS(credentials: 'aws-id', region:'ap-south-1') {
           s3Upload(bucket:'my-web1-app-bucket', workingDir: 'dist/', includePathPattern: '**/*')
         }
       }
