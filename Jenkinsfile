@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCESS_KEY_ID = 'AKIA6ODUZQ3Y7FT2ANU7'
+        AWS_ACCESS_KEY_ID = credentials('your-aws-access-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
     }
    
@@ -17,7 +17,7 @@ pipeline {
             steps {
                 withCredentials([
                     string(credentialsId: 'your-aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
-                    string(credentialsId: 'your-aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                    string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
                     // Use the 'aws s3 cp' command to upload the files
                     sh '''
