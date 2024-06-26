@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-form',
@@ -10,15 +9,12 @@ export class FormComponent {
   user = {
     name: '',
     age: null,
-    gender: ''
+    address: ''
   };
 
-  constructor(private http: HttpClient) {}
-
   onSubmit() {
-    this.http.post('http://your-api-endpoint.com/users', this.user).subscribe(response => {
-      console.log('User saved', response);
-    });
+    // Handle form submission logic here
+    console.log('Form submitted:', this.user);
+    // You can add HTTP service calls or other logic as needed
   }
 }
-
